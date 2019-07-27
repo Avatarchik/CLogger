@@ -1,0 +1,2 @@
+# CLogger
+Simple Unity logger
