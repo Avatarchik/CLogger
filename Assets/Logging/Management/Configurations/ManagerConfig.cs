@@ -1,52 +1,64 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
 namespace caneva20.Logging.Management.Configurations {
     public class ManagerConfig : ScriptableObject {
         private static ManagerConfig _instance;
-        
+
         public static ManagerConfig Instance {
             get {
                 if (_instance == null) {
                     _instance = ManagerConfigLoader.Load();
+                    
+                    _instance.Initialize();
                 }
 
                 return _instance;
             }
         }
 
-        [SerializeField] private List<LoggerConfig> _configs;
+        [SerializeField] private List<LoggerConfig> _configList;
 
-        public LoggerConfig this[FieldInfo field] {
-            get {
-                if (!HasConfig(field, out var config)) {
-                    config = Add(field);
-                }
-                
-                return config;
+        private bool _initialized;
+        private readonly Dictionary<string, LoggerConfig> _configs = new Dictionary<string, LoggerConfig>();
+
+        private void Initialize() {
+            if (_initialized) {
+                return;
             }
+
+            foreach (var config in _configList) {
+                _configs.Add(config.Id, config);
+            }
+
+            _initialized = true;
         }
 
-        public bool HasConfig(FieldInfo field, out LoggerConfig config) {
-            var fieldName = field.Name;
-            var declaringTypeFullName = field.DeclaringType?.FullName;
+        private bool HasConfig(Type type) {
+            Initialize();
 
-            if (_configs == null) {
-                _configs = new List<LoggerConfig>();
-            }
-            
-            config = _configs.SingleOrDefault(_ => _.FieldName == fieldName && _.DeclaringTypeFullName == declaringTypeFullName);
+            var id = GetIdFromType(type);
 
-            return config != null;
+            return _configs.ContainsKey(id);
         }
 
-        public LoggerConfig Add(FieldInfo field) {
-            var config = new LoggerConfig(field);
-                    
-            _configs.Add(config);
+        public LoggerConfig this[Type type] => GetConfig(type);
+
+        public LoggerConfig GetConfig(Type type) {
+            if (!HasConfig(type)) {
+                return Add(type);
+            }
+
+            return _configs[GetIdFromType(type)];
+        }
+
+        public LoggerConfig Add(Type type) {
+            var config = new LoggerConfig(GetIdFromType(type));
+
+            _configList.Add(config);
+            _configs.Add(config.Id, config);
 
         #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
@@ -55,12 +67,17 @@ namespace caneva20.Logging.Management.Configurations {
             return config;
         }
 
-        public void Remove(FieldInfo field) {
-            if (!HasConfig(field, out var config)) {
+        public void Remove(Type type) {
+            if (!HasConfig(type)) {
                 return;
             }
+            
+            _configList.Remove(GetConfig(type));
+            _configs.Remove(GetIdFromType(type));
+        }
 
-            _configs.Remove(config);
+        private static string GetIdFromType(Type type) {
+            return type.FullName;
         }
     }
 }

@@ -5,19 +5,16 @@ using UnityEngine;
 namespace caneva20.Logging.Management.Configurations {
     [Serializable]
     public class LoggerConfig {
-        [SerializeField] private string _declaringTypeFullName;
-        [SerializeField] private string _fieldName;
+        [SerializeField] private string _loggerId;
         
         [SerializeField] private LogLevel _logLevel;
         [SerializeField] private string _tag;
 
-        public LoggerConfig(FieldInfo field) {
-            _declaringTypeFullName = field.DeclaringType?.FullName;
-            _fieldName = field.Name;
+        public LoggerConfig(string id) {
+            _loggerId = id;
         }
         
-        public string DeclaringTypeFullName => _declaringTypeFullName;
-        public string FieldName => _fieldName;
+        public string Id => _loggerId;
 
         public LogLevel Level {
             get => _logLevel;
