@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using caneva20.Logging.Exceptions;
+using UnityEditor;
 using UnityEngine;
 
 namespace caneva20.Logging.Management.Configurations {
@@ -22,8 +22,6 @@ namespace caneva20.Logging.Management.Configurations {
 
         public LoggerConfig this[FieldInfo field] {
             get {
-                ThrowIfNotLogger(field);
-
                 if (!HasConfig(field, out var config)) {
                     config = Add(field);
                 }
@@ -46,39 +44,23 @@ namespace caneva20.Logging.Management.Configurations {
         }
 
         public LoggerConfig Add(FieldInfo field) {
-            ThrowIfNotLogger(field);
-            
             var config = new LoggerConfig(field);
                     
             _configs.Add(config);
 
         #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
+            EditorUtility.SetDirty(this);
         #endif
 
             return config;
         }
 
         public void Remove(FieldInfo field) {
-            ThrowIfNotLogger(field);
-
             if (!HasConfig(field, out var config)) {
                 return;
             }
 
             _configs.Remove(config);
-        }
-
-        private static void ThrowIfNotLogger(FieldInfo field) {
-            if (IsLogger(field)) {
-                return;
-            }
-            
-            throw new InvalidFieldInfoException();
-        }
-        
-        private static bool IsLogger(FieldInfo field) {
-            return StaticConfig.LoggerType.IsAssignableFrom(field.FieldType);
         }
     }
 }
