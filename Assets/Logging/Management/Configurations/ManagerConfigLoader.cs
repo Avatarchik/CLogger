@@ -1,12 +1,13 @@
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 namespace caneva20.Logging.Management.Configurations {
     public static class ManagerConfigLoader {
         public static ManagerConfig Load() {
-            var config = Object.FindObjectOfType<ManagerConfig>();
-
+            var config = Resources.FindObjectsOfTypeAll<ManagerConfig>().FirstOrDefault();
+            
             return config ? config : CreateConfig();
         }
 
