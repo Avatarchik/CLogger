@@ -49,3 +49,6 @@ crashlytics-build.properties
 
 /.idea
 /Assets/Tools
+/Assets/Tools.meta
+/Assets/Tests
+/Assets/Tests.meta
