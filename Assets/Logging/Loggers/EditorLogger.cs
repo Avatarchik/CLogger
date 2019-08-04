@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using caneva20.Logging.Management.Configurations;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -8,14 +9,14 @@ namespace caneva20.Logging.Loggers {
     public class EditorLogger : ICLogger {
         private readonly string _id = GenerateId(5);
 
-        private const string DEBUG_TAG = "DEBUG";
-        private const string TRACE_TAG = "TRACE";
-        private readonly string _defaultTag;
-        private readonly LogLevel _minLevel;
+        private readonly LoggerConfig _config;
 
-        public EditorLogger(string defaultTag, LogLevel minLevel) {
-            _defaultTag = defaultTag;
-            _minLevel = minLevel;
+        private static string DebugTag => ManagerConfig.Instance.DebugPrefix;
+        private static string TraceTag => ManagerConfig.Instance.TracePrefix;
+        private string Tag => _config.Tag;
+
+        public EditorLogger(LoggerConfig config) {
+            _config = config;
         }
 
         private string GetTag(LogLevel level) {
@@ -26,32 +27,32 @@ namespace caneva20.Logging.Loggers {
                 case LogLevel.Disabled: break;
                 case LogLevel.Trace:
                     color = "green";
-                    tag = $"{TRACE_TAG}:{_defaultTag}";
+                    tag = $"{TraceTag}:{Tag}";
                     break;
                 case LogLevel.Debug:
-                    tag = $"{DEBUG_TAG}:{_defaultTag}";
+                    tag = $"{DebugTag}:{Tag}";
                     color = "green";
                     break;
                 case LogLevel.Information:
-                    tag = _defaultTag;
+                    tag = Tag;
                     color = "blue";
                     break;
                 case LogLevel.Warning:
-                    tag = _defaultTag;
+                    tag = Tag;
                     color = "yellow";
                     break;
                 case LogLevel.Error:
-                    tag = _defaultTag;
+                    tag = Tag;
                     color = "red";
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
-
+            
             return $"<color=white>{_id}</color> <color={color}>[{tag}]</color>";
         }
 
         public void Log(string message, LogLevel level, Exception exception = null) {
-            if (_minLevel == LogLevel.Disabled || level < _minLevel) {
+            if (_config.Level == LogLevel.Disabled || level < _config.Level) {
                 return;
             }
 

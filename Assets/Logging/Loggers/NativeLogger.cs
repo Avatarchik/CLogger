@@ -1,14 +1,17 @@
 using System;
+using caneva20.Logging.Management.Configurations;
 using UnityEngine;
 
 namespace caneva20.Logging.Loggers {
     public class NativeLogger : ICLogger {
-        private const string DEBUG_TAG = "DEBUG";
-        private const string TRACE_TAG = "TRACE";
-        private readonly string _defaultTag;
+        private static string DebugTag => ManagerConfig.Instance.DebugPrefix;
+        private static string TraceTag => ManagerConfig.Instance.TracePrefix;
 
-        public NativeLogger(string defaultTag) {
-            _defaultTag = defaultTag;
+        private readonly LoggerConfig _config;
+        private string Tag => _config.Tag;
+
+        public NativeLogger(LoggerConfig config) {
+            _config = config;
         }
 
         private string GetTag(LogLevel level) {
@@ -17,19 +20,19 @@ namespace caneva20.Logging.Loggers {
             switch (level) {
                 case LogLevel.Disabled: break;
                 case LogLevel.Trace:
-                    tag = $"{TRACE_TAG}:{_defaultTag}";
+                    tag = $"{TraceTag}:{Tag}";
                     break;
                 case LogLevel.Debug:
-                    tag = $"{DEBUG_TAG}:{_defaultTag}";
+                    tag = $"{DebugTag}:{Tag}";
                     break;
                 case LogLevel.Information:
-                    tag = _defaultTag;
+                    tag = Tag;
                     break;
                 case LogLevel.Warning:
-                    tag = _defaultTag;
+                    tag = Tag;
                     break;
                 case LogLevel.Error:
-                    tag = _defaultTag;
+                    tag = Tag;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(level), level, null);
             }
