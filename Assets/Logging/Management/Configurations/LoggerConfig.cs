@@ -1,6 +1,4 @@
 using System;
-using System.Reflection;
-using NaughtyAttributes;
 using UnityEngine;
 
 namespace caneva20.Logging.Management.Configurations {
