@@ -1,19 +1,15 @@
 using System;
 using System.Reflection;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace caneva20.Logging.Management.Configurations {
     [Serializable]
     public class LoggerConfig {
         [SerializeField] private string _loggerId;
-        
         [SerializeField] private LogLevel _logLevel;
         [SerializeField] private string _tag;
 
-        public LoggerConfig(string id) {
-            _loggerId = id;
-        }
-        
         public string Id => _loggerId;
 
         public LogLevel Level {
@@ -25,5 +21,14 @@ namespace caneva20.Logging.Management.Configurations {
             get => _tag;
             set => _tag = value;
         }
+
+        public LoggerConfig(Type type) {
+            _loggerId = GetId(type);
+            _tag = type.Name;
+
+            _logLevel = LogLevel.Information;
+        }
+
+        public static string GetId(Type type) => type.FullName;
     }
 }
