@@ -1,23 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using caneva20.ConfigAssets;
 using UnityEditor;
 using UnityEngine;
+// ReSharper disable ConvertToAutoProperty
 
 namespace caneva20.Logging.Management.Configurations {
-    public class ManagerConfig : ScriptableObject {
-        private static ManagerConfig _instance;
-
-        public static ManagerConfig Instance {
-            get {
-                if (_instance == null) {
-                    _instance = ManagerConfigLoader.Load();
-                }
-
-                return _instance;
-            }
-        }
-
+    public class ManagerConfig : Config<ManagerConfig> {
         [SerializeField] private string _debugPrefix = "DEBUG";
         [SerializeField] private string _tracePrefix = "TRACE";
         [SerializeField] private List<LoggerConfig> _configs;
@@ -41,7 +31,7 @@ namespace caneva20.Logging.Management.Configurations {
         private bool HasConfig(Type type) {
             var id = GetIdFromType(type);
 
-            return _configs.Any(_ => _.Id == id);
+            return _configs != null && _configs.Any(_ => _.Id == id);
         }
 
         public LoggerConfig Add(Type type) {
