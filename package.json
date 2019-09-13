@@ -1,0 +1,8 @@
+{
+  "name": "caneva20.logging",
+  "displayName": "CLogger",
+  "version": "0.0.1",
+  "dependencies": {
+    "caneva20.config-assets": "0.1.0-preview.1"
+  }
+}
