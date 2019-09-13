@@ -1,7 +1,7 @@
 using System;
 
 namespace caneva20.Logging {
-    public static partial class Logger {
+    public static partial class CLogger {
         public static void Trace(string msg) {
             Get().Log(msg, LogLevel.Trace);
         }

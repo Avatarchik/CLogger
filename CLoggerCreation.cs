@@ -5,7 +5,7 @@ using caneva20.Logging.Loggers;
 using caneva20.Logging.Management.Configurations;
 
 namespace caneva20.Logging {
-    public static partial class Logger {
+    public static partial class CLogger {
         private const int FRAME_INDEX = 3;
         private static readonly Dictionary<Type, ICLogger> _loggers = new Dictionary<Type, ICLogger>();
 
