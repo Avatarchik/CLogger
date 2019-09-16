@@ -10,12 +10,12 @@ namespace caneva20.Logging.Management.Configurations {
     public class ManagerConfig : Config<ManagerConfig> {
         [SerializeField] private string _debugPrefix = "DEBUG";
         [SerializeField] private string _tracePrefix = "TRACE";
-        [SerializeField] private List<string> _ignoredNamespaces;
-        [SerializeField] private List<LoggerConfig> _configs;
+        [SerializeField] private List<string> _ignoredNamespaces = new List<string>();
+        [SerializeField] private List<LoggerConfig> _configs = new List<LoggerConfig>();
 
         public string DebugPrefix => _debugPrefix;
         public string TracePrefix => _tracePrefix;
-        public IEnumerable<string> IgnoredNamespaces => _ignoredNamespaces ?? Enumerable.Empty<string>();
+        public IEnumerable<string> IgnoredNamespaces => _ignoredNamespaces;
 
         public LoggerConfig this[Type type] => GetConfig(type);
 
