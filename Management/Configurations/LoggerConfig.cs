@@ -24,7 +24,7 @@ namespace caneva20.Logging.Management.Configurations {
             _loggerId = GetId(type);
             _tag = type.Name;
 
-            _logLevel = LogLevel.Information;
+            _logLevel = LogLevel.Debug;
         }
 
         public static string GetId(Type type) => type.FullName;

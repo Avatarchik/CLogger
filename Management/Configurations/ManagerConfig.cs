@@ -15,7 +15,7 @@ namespace caneva20.Logging.Management.Configurations {
 
         public string DebugPrefix => _debugPrefix;
         public string TracePrefix => _tracePrefix;
-        public IEnumerable<string> IgnoredNamespaces => _ignoredNamespaces;
+        public IEnumerable<string> IgnoredNamespaces => _ignoredNamespaces ?? Enumerable.Empty<string>();
 
         public LoggerConfig this[Type type] => GetConfig(type);
 
