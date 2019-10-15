@@ -3,6 +3,7 @@
   "displayName": "CLogger",
   "version": "0.1.4-preview.5",
   "dependencies": {
-    "caneva20.config-assets": "0.1.0-preview.2"
-  }
+    "caneva20.config-assets": "0.2.0-preview.3"
+  },
+  "type": "tool"
 }
