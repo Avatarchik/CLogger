@@ -26,14 +26,10 @@ namespace caneva20.Logging {
 		
             return root;
 		
-            Type NextType() {
-                return stack.GetFrame(currentFrame++).GetMethod().DeclaringType;
-            }
+            Type NextType() => stack.GetFrame(currentFrame++)?.GetMethod()?.DeclaringType;
         }
 
         private static bool IsValidType(Type type) {
-            Console.WriteLine($"Checking {type.Name}");
-
             return !IsIgnored(type) && !IsAnonymousType(type);
         }
 
