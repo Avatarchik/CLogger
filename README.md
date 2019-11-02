@@ -7,7 +7,7 @@ Find `Packages/manifest.json` in your project and edit it to look like this:
 ```json
 {
   "dependencies": {
-    "caneva20.config-assets": "https://github.com/caneva20/CLogger.git#0.1-preview.1",
+    "caneva20.logging": "https://github.com/caneva20/CLogger.git#0.1.4-preview.5",
     ...
   },
 }
