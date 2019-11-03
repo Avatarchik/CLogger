@@ -15,6 +15,3 @@ Find `Packages/manifest.json` in your project and edit it to look like this:
   },
 }
 ```
-
-## Usage
-Maybe later
